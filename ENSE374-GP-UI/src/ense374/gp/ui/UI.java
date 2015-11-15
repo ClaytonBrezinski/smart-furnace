@@ -111,7 +111,7 @@ public class UI
             {
                 correctPassword = true;
             }
-            else if (inputPassword == "x" || inputPassword == "X")
+            else if (inputPassword.equalsIgnoreCase("x"))
             {
                 return false;
             }
@@ -177,7 +177,49 @@ public class UI
         }
         return true;
     }
+    /*
+    Purpose:
+    Arguements:
+    Return:
+    Notes: Can get it to not return anything and instead make calls from within the function to the other calls.
+    */
+    
+    public int mainScreen(String user, String[] mainOptions)
+    {
+        String userSelection;
+        int userChoice = -1;
+        boolean validChoice = false;
+        System.out.println("Welcome " + user);
+        while (validChoice == false)
+        {
+            System.out.println("What would you like to do?:");
+            for (int i = 0; i < mainOptions.length; i++)
+            {
+                System.out.println((i + 1) + ". " + mainOptions[i]);
+            }
 
+            userSelection = input.nextLine();
+            boolean isAnInteger = isInteger(userSelection);
+            if (isAnInteger == true)
+            {
+                userChoice = Integer.parseInt(userSelection) - 1;
+                if (userChoice >= 0 && userChoice <= mainOptions.length)
+                {
+                  return userChoice;
+                }
+                else
+                {
+                    System.out.println("This is an invalid choice, please try another");
+                }
+            }
+            else
+            {
+                System.out.println("Please enter a number to select your choice");
+            }
+        }
+        // default return statement - should never be hit.
+        return userChoice;
+    }
 }
     /*
     Purpose:
