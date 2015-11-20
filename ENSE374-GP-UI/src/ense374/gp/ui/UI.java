@@ -13,13 +13,15 @@ public class UI
 {
     private Scanner input = new Scanner(System.in);
     private User user;
+    private Controller controller;
     /*
     Purpose: Default constructor
-    Arguements: none
+    Arguements: User[]- array of all the users, String- the list of options the user gets when, String[]- list of room names in the building
+                Controller- controller for the back end of this program
     Returns: none
     Notes: will be expanded on, when a UI is created, it will begin the UI process.
     */
-    public UI(User[] users, String[] mainScreenOptions, String[] roomNames)
+    public UI(User[] users, String[] mainScreenOptions, String[] roomNames, Controller controller)
     {
         // create list of users
         String[] userNames = createListOfUsers(users);
@@ -50,12 +52,11 @@ public class UI
                 case 4: System.exit(0);
                         break;
             }
-        // call UI from here
         }
     }
     
     /*
-    Purpose:
+    Purpose: Prints the current room temperatures
     Arguements:
     Return:
     Notes: 
@@ -63,16 +64,18 @@ public class UI
     private void currentRoomTemperatures()
     {
         
+        
         System.out.println('\n' + "Current room temperatures");
         System.out.println("press any key to return");
-        // have output here
-        
+        // have output here 
+        // currently we are working on making this a more "pretty print out" but the room temps are present
+        controller.debug_printRooms();
         
         String userSelection = input.nextLine();
         return;
     }
     /*
-    Purpose:
+    Purpose: Prints the current orientation of the vents
     Arguements:
     Return:
     Notes: 
@@ -82,6 +85,8 @@ public class UI
         System.out.println('\n' + "Current vent orientation");
         System.out.println("press any key to return");
         // have output here
+        // currently we are working on making this a more "pretty print out" but the room temps are present
+        controller.debug_printRooms();
         
         String userSelection = input.nextLine();
         return;
@@ -190,9 +195,9 @@ public class UI
 
 
     /*
-    Purpose:
-    Arguements:
-    Return:
+    Purpose: provides the main screen after a user has logged in. it gives the user a list of options that they can do
+    Arguements: String- current user, String[]- list of available options
+    Return: int- the selected option that the user had selected. 
     Notes: 
     */
     public int mainScreen(String user, String[] mainOptions)
@@ -233,8 +238,8 @@ public class UI
     }
     
     /*
-    Purpose:
-    Arguements:
+    Purpose: determines which room the user wishes to access 
+    Arguements: String- list of rooms that the building has
     Return:
     Notes: 
     */
@@ -261,7 +266,8 @@ public class UI
                 {
                   if ( userHasAccess(rooms[userChoice]) == true)
                   {
-                      
+                      // make the room heat temperature change request here
+                      tempChangeRequest(rooms[userChoice], 25,17);
                   }
                 }
                 else
@@ -278,9 +284,9 @@ public class UI
     }
     
     /*
-    Purpose:
-    Arguements:
-    Return:
+    Purpose: Determines if the user has the credentials to change the temperature for the room
+    Arguements: String- the room selected
+    Return: Boolean- true: they can change the temp false: the cannot change the temp
     Notes: 
     */    
     private boolean userHasAccess(String roomSelected)
@@ -302,7 +308,7 @@ public class UI
         return true;
     }
     /*
-    Purpose:
+    Purpose: displays the status of all the sensors present in the system. 
     Arguements:
     Return:
     Notes: 
@@ -328,10 +334,10 @@ public class UI
         }
     }
     /*
-    Purpose:
-    Arguements:
+    Purpose: read back to the user what the previous warning system logs 
+    Arguements: 
     Return:
-    Notes: 
+    Notes: will be implementing a logging system such that this function will read the logs from a text file and then output them for the user
     */
     private void warningSystemLogs()
     {
@@ -343,16 +349,10 @@ public class UI
         return;
         // needs to end with a return call to warning system status.
     }
-    /*
-    Purpose: area where its easy to set suitable levels of water being detected
-    Arguements: double- the reading from the water detector
-    Return: string- statment of water level that a user will understand
-    Notes: 
-    */
     
     /*
-    Purpose:
-    Arguements:
+    Purpose: gets the user's temperature reading request and then makes the change to the back end system
+    Arguements:String- the room that will have the temp altered, int- the max setable temperature, int- the lowest setable temperature
     Return:
     Notes: change back to private
     */
@@ -375,13 +375,19 @@ public class UI
                 }
                 else
                 {
+                        controller.setDesiredRoomTemp(roomToBeChanged, newTemp, 1);
                         validChoice = true;
                 }
             }
         }
         // return to change room temperatures
     }
-    
+    /*
+    Purpose: Interpereates the water detector's status into a verbal form
+    Arguements: double- the water detector reading
+    Return: String- readable format of water detector reading
+    Notes: 
+    */
     private String interperateWaterStatus(double waterDetectorStatus)
     {
         // can't use case here since Java doesnt support use of double, float, or booleans in case statements :(
@@ -486,9 +492,9 @@ public class UI
         return true;
     }
     /*
-    Purpose:
-    Arguements:
-    Return:
+    Purpose: creat an array of strings that states all the users available for the program
+    Arguements:User[]- users available
+    Return:String[]- names of all users
     Notes: Can get it to not return anything and instead make calls from within the function to the other calls.
     */ 
     private String[] createListOfUsers(User[] users)

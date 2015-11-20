@@ -14,26 +14,56 @@ public class User
     private String name;
     private String[] accessRestrictions;
     private String userPassword;
+    /*
+    Purpose:
+    Arguements:
+    Return:
+    Notes: 
+    */
     public User()
     {
         name = null;
         accessRestrictions = null;
         userPassword = null;
     }
+    /*
+    Purpose:
+    Arguements:
+    Return:
+    Notes: 
+    */
     public User(String toName, String[] toRestrict, String toUserPassword)
     {
         name = toName;
         accessRestrictions = toRestrict;
         userPassword = toUserPassword;
     }
+    /*
+    Purpose:
+    Arguements:
+    Return:
+    Notes: 
+    */
     public String getName()
     {
         return name;
     }
+    /*
+    Purpose:
+    Arguements:
+    Return:
+    Notes: 
+    */
     public String[] getAccessRestrictions()
     {
         return accessRestrictions;
     }
+    /*
+    Purpose:
+    Arguements:
+    Return:
+    Notes: 
+    */
     public boolean isCorrectUserPassword(String submittedPassword)
     {
         if ( userPassword.equals(submittedPassword))
