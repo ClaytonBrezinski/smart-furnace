@@ -17,12 +17,16 @@ public class ENSE374GPUI {
     public static void main(String[] args) 
     {
         // testing area
-        String[] userArray = {"a","b","c"};
-        String[] mainOptions = {"View current vent orientation", "Check current room  temperatures", "Change current room temperatures", "View Warning Status'", "Turn off Smart Furnace", "Logout"};
-        UI ui = new UI();
-        ui.mainScreen("a", mainOptions);
-        ui.loginScreen("a", "qq");
-        int userSelection = ui.welcomeScreen(userArray);
+        int MAX_TEMP = 25;
+        int MIN_TEMP = 17;
+        
+        String[] mainOptions = {"View current vent orientation", "Check current room  temperatures", "Change current room temperatures", "View Warning Status'", "Turn off Smart Furnace"};
+        String[] roomNames = {"Q","R","S"}; // this will need to be pulled from eric's program. 
+        
+        String[] childRestrictions = {"Bedroom1", "bedroom2"};
+        User[] userArray = {new User("Mom", null, "a"), new User("Child",childRestrictions, "b"), new User("System Tech", null, "p")};   
+        
+        UI ui = new UI(userArray, mainOptions, roomNames);
     }
     
 }
